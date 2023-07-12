@@ -1,0 +1,109 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import entity.Movimentacoes;
+
+
+
+public class MovimentacoesDAO {
+	
+	
+	public List<Movimentacoes> listarMovimentacoes(Connection conn) throws SQLException{
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Movimentacoes func = null;
+		List<Movimentacoes> lista = new ArrayList<Movimentacoes>();
+		try{
+			
+				
+					sql.append("SELECT * FROM MOVIMENTACOES ");
+					sql.append("ORDER BY IDMOVIMENTACOES ");
+					ps = conn.prepareStatement(sql.toString());
+					rs = ps.executeQuery();
+					while (rs.next()){
+						func = new Movimentacoes();
+						func.setIdmovimentacoes(rs.getInt("IDMOVIMENTACOES"));
+						func.setDescricao(rs.getString("DESCRICAO").trim());
+						func.setValor(rs.getString("VALOR"));
+						func.setTipo(rs.getString("TIPO"));
+						func.setFormapagamento(rs.getString("FORMAPAGAMENTO"));
+						lista.add(func);
+
+					}
+					
+					
+		}catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("(listarMovimentacoes) - Erro: " + e.getMessage());
+		}finally{
+				try{ps.close();}catch(SQLException e){}
+				if (rs != null){
+					try{rs.close();}catch(SQLException e){}
+		}
+				
+				
+				ps = null;
+				rs = null;
+				sql = null;
+		}
+return lista;
+}
+	
+	
+	
+	public void inserir(Connection conn, Movimentacoes movimentacoes) throws SQLException{
+			StringBuffer sql = new StringBuffer();
+			PreparedStatement ps = null;
+			try{
+				
+				
+				
+int qtdeGravados = listarFuncionarios(conn).size(); // <<<<-------
+qtdeGravados++;
+sql.delete(0, sql.length());
+sql.append("INSERT INTO FUNCIONARIO (CODIGO, NOME, CARGO, 
+DESCRICAOCARGO, SETOR, SALARIO) ");
+sql.append(" VALUES (?, ?, ?, ?, ?, ?) ");
+ps = conn.prepareStatement(sql.toString());
+ps.setInt(1, qtdeGravados);
+ps.setString(2, funcionario.getNome());
+ps.setInt(3, funcionario.getCargo());
+ps.setString(4, funcionario.getDescricaoCargo());
+ps.setInt(5, funcionario.getSetor());
+ps.setDouble(6, funcionario.getSalario());
+ps.executeUpdate();
+}finally{
+try{ps.close();ps = null;}catch(SQLException e){}
+ps = null;
+sql = null;
+}
+}
+public void alterar(List<Funcionario> lista, Funcionario funcionario){
+for (int liX = lista.size()-1; liX >= 0; liX--){
+if (lista.get(liX).getCodigo() == funcionario.getCodigo()){
+lista.get(liX).setNome(funcionario.getNome());
+lista.get(liX).setCargo(funcionario.getCargo());
+lista.get(liX).setDescricaoCargo(funcionario.getDescricaoCargo());
+lista.get(liX).setSetor(funcionario.getSetor());
+lista.get(liX).setSalario(funcionario.getSalario());
+}
+}
+funcionario = null;
+funcionario = new Funcionario();
+}
+public void excluir(List<Funcionario> lista, Funcionario funcionario){
+for (int liX = lista.size()-1; liX >= 0; liX--){
+if (lista.get(liX).getCodigo() == funcionario.getCodigo()){
+lista.remove(liX);
+}
+}
+funcionario = null;
+funcionario = new Funcionario();
+}
+}

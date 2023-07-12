@@ -1,0 +1,68 @@
+package servlet;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import dao.ConexaoBD;
+import dao.MovimentacoesDAO;
+import entity.Movimentacoes;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet("/InfoMovimentacoes")
+public class Insercao extends HttpServlet {
+private static final long serialVersionUID = 1L;
+ 
+ 			public void Movimentacoes() {
+ 			}
+ 
+ 
+			protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+ 				throws
+ 				ServletException, IOException {
+ 				System.out.println("Efetuado método GET");
+ 			}
+ 				
+ 				
+ 				protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+ 						throws ServletException, IOException {
+ 					
+ 					System.out.println("Passando pelo método POST");
+ 					Connection conn = ConexaoBD.getConexao();
+ 					MovimentacoesDAO funcDao = new MovimentacoesDAO();
+ 					try {
+ 						
+ 						Movimentacoes func = new Movimentacoes();
+ 						
+ 						func.setIdmovimentacoes(funcDao.listarMovimentacoes(conn).size()+1);
+ 						func.setDescricao(request.getParameter("descricao"));
+ 						func.setValor(request.getParameter("valor"));
+ 						func.setTipo(request.getParameter("tipo"));
+ 						func.setFormapagamento(request.getParameter("formapagamento"));
+ 						
+ 						
+ 						funcDao.inserir(conn, func);
+ 						request.setAttribute("listaMovimentacaoes", 
+ 						funcDao.listarMovimentacoes(conn));
+ 						
+					} catch (SQLException e) {
+ 						e.printStackTrace();
+					} finally {
+						try {
+							conn.close();
+ 						} catch (SQLException e) {
+ 							e.printStackTrace();
+ 						}
+ 						// conn = null;
+ 					}
+ 					RequestDispatcher rd = 
+ 							request.getServletContext().getRequestDispatcher("/index.jsp");
+ 					rd.forward(request, response);
+ 					return;
+}
+}

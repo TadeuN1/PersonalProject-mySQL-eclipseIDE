@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Especificação de dados</title>
+</head>
+<body>
+
+
+<form method="POST" action="InfoMovimentacoes">
+	<table>
+		<tr>
+			<td colspan="2">Cadastro de Funcionário</td>
+		</tr>
+		<tr>
+			<td>Descricao:</td>
+			<td><input type="text" name="descricao"></td>
+		</tr>
+		<tr>
+			<td>Valor:</td>
+			<td><input type="text" name="valor"></td>
+		</tr>
+		<tr>
+			<td>Tipo:</td>
+		<td><textarea name="tipo" cols="15"
+		rows="15"></textarea></td>
+		</tr>
+		<tr>
+		<td>FormaPagamento:</td>
+		<td><input type="text" name="formapagamento"></td>
+		</tr>
+		</table>
+		<br><br>
+		<input type="Salvar" name="Salvar">
+		</form>
+		</body>
+		</html>

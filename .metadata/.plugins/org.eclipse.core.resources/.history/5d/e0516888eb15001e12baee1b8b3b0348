@@ -1,0 +1,72 @@
+package servlet;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.ConexaoBD;
+import dao.MovimentacoesDAO;
+import entity.Movimentacoes;
+
+@WebServlet("/InfoMovimentacoes")
+public class Movimentacoes extends HttpServlet {
+private static final long serialVersionUID = 1L;
+ 
+ 			public Movimentacoes() {
+ 			super();
+ 			}
+ 
+ 
+ 				protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+ 				throws
+ 				ServletException, IOException {
+ 				System.out.println("Efetuado método GET");
+ 			}
+ 				
+ 				
+ 				protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+ 						throws ServletException, IOException {
+ 					
+ 					System.out.println("Passando pelo método POST");
+ 					Connection conn = ConexaoBD.getConexao();
+ 					MovimentacoesDAO funcDao = new MovimentacoesDAO();
+ 					try {
+ 						
+ 						Movimentacoes func = new Movimentacoes();
+ 						
+ 						func.setidmovimentacoes(funcDao.listarMovimentacoes(conn).size()+1);
+ 						func.setNome(request.getParameter("nome"));
+ 						func.setDescricaoCargo(request.getParameter("descCargo"));
+/*
+* campos abaixo foram deixados fixos pois é necessário colocar
+* uma função nos campos numéricos para apenas permitir digitar
+números
+* */ 					func.setCargo(9);
+ 						func.setSetor(1010);
+ 						func.setSalario(5800);
+ 						funcDao.inserir(conn, func);
+ 						request.setAttribute("listaFuncionarios", 
+ 						funcDao.listarFuncionarios(conn));
+ 						
+ 						} catch (SQLException e) {
+ 						e.printStackTrace();
+ 						} finally {
+ 							try {
+ 						conn.close();
+ 						} catch (SQLException e) {
+ 							e.printStackTrace();
+ 						}
+ 						conn = null;
+ 					}
+ 					RequestDispatcher rd = 
+ 							request.getServletContext().getRequestDispatcher("/index.jsp");
+ 					rd.forward(request, response);
+}
+}

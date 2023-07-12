@@ -1,0 +1,117 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import entity.Movimentacoes;
+
+
+public class MovimentacoesDAO {
+
+	public List<Movimentacoes> listarMovimentacoes(Connection conn) throws SQLException {
+		StringBuffer sql = new StringBuffer();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Movimentacoes func = null;
+		List<Movimentacoes> lista = new ArrayList<Movimentacoes>();
+
+		try {
+			sql.append("SELECT * FROM MOVIMENTACOES ");
+			sql.append("ORDER BY IDMOVIMENTACOES ");
+			ps = conn.prepareStatement(sql.toString());
+			rs = ps.executeQuery();
+			while (rs.next()){
+				func = new Movimentacoes();
+				func.setIdmovimentacoes(rs.getInt("IDMOVIMENTACOES"));
+				func.setDescricao(rs.getString("DESCRICAO").trim());
+				func.setValor(rs.getString("VALOR"));
+				func.setTipo(rs.getString("TIPO"));
+				func.setFormapagamento(rs.getString("FORMAPAGAMENTO"));
+				lista.add(func);
+	
+			}		
+		} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("(listarMovimentacoes) - Erro: " + e.getMessage());
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+					ps = null;
+				} catch(SQLException e){}
+			}
+				
+			if (rs != null){
+				try {
+					rs.close();
+					rs = null;
+				}catch(SQLException e){}
+			}
+				
+		}
+		return lista;
+	}
+	
+	
+	
+	public void inserir(Connection conn, Movimentacoes movimentacoes) throws SQLException{
+			StringBuffer sql = new StringBuffer();
+			PreparedStatement ps = null;
+			try{
+								
+				
+				int qtdeGravados = listarMovimentacoes(conn).size();
+				qtdeGravados++;
+
+
+				sql.delete(0, sql.length());
+				sql.append("INSERT INTO MOVIMENTACOES (IDMOVIMENTACOES, DESCRICAO, VALOR, TIPO, FORMAPAGAMENTO) ");
+				sql.append(" VALUES (?, ?, ?, ?, ?) ");
+				ps = conn.prepareStatement(sql.toString());
+				
+				ps.setInt(1, qtdeGravados);
+				ps.setString(2, movimentacoes.getDescricao());
+				ps.setString(3, movimentacoes.getValor());
+				ps.setString(4, movimentacoes.getTipo());
+				ps.setString(5, movimentacoes.getFormapagamento());
+				ps.executeUpdate();
+
+
+			}finally{
+				if (ps != null) {
+					try {
+						ps.close();
+						ps = null;
+					} catch(SQLException e){}
+				}				
+			}
+	}
+	
+	
+		public void alterar(List<Movimentacoes> lista, Movimentacoes movimentacoes){
+			for (int liX = lista.size()-1; liX >= 0; liX--){
+					if (lista.get(liX).getIdmovimentacoes() == movimentacoes.getIdmovimentacoes()){
+							lista.get(liX).setDescricao(movimentacoes.getDescricao());
+							lista.get(liX).setValor(movimentacoes.getValor());
+							lista.get(liX).setTipo(movimentacoes.getTipo());
+							lista.get(liX).setFormapagamento(movimentacoes.getFormapagamento());
+	}
+		}
+		movimentacoes = null;
+		movimentacoes = new Movimentacoes();
+		}
+		
+		
+		public void excluir(List<Movimentacoes> lista, Movimentacoes movimentacoes){
+				for (int liX = lista.size()-1; liX >= 0; liX--){
+					if (lista.get(liX).getIdmovimentacoes() == movimentacoes.getIdmovimentacoes()){
+						lista.remove(liX);
+					}
+				}
+				movimentacoes = null;
+				movimentacoes = new Movimentacoes();
+		}
+}

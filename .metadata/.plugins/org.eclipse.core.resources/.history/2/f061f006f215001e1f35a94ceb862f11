@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Especificacao de dados</title>
+</head>
+<body>
+
+
+<form method="POST" action="InfoMovimentacoes">
+	<table>
+		<tr>
+			<td colspan="2">Inserir Dados Financeiros</td>
+		</tr>
+		<tr>
+			<td>Descricao:</td>
+			<td><input type="text" name="descricao"></td>
+		</tr>
+		<tr>
+			<td>Valor:</td>
+			<td><input type="text" name="valor"></td>
+		</tr>
+		<tr>
+			<td>Tipo:</td>
+		<td><textarea name="tipo"></td>
+		</tr>
+		<tr>
+		<td>FormaPagamento:</td>
+		<td><input type="text" name="formapagamento"></td>
+		</tr>
+		</table>
+		<br><br>
+		<input type="Submit" name="Gravar">
+		</form>
+		</body>
+		</html>

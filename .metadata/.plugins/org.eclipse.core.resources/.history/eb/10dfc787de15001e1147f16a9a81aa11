@@ -1,0 +1,12 @@
+package dao;
+
+import java.sql.Connection;
+
+public class Conexao {
+
+	public static Connection getConexao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

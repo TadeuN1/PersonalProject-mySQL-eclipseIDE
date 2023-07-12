@@ -1,0 +1,23 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class ConexaoBD {
+
+  private static final String url = "jdbc:mysql://localhost:3306/projetobd";
+  private static final String user = "root";
+  private static final String password = "Conexaomysql123?";
+  
+  public static Connection getConexao(){
+	    try{
+	        Class.forName("com.mysql.jdbc.Driver");
+	        String unicode="useSSL=false&autoReconnect=true&useUnicode=yes&characterEncoding=UTF-8";
+	        return DriverManager.getConnection(url + unicode, user, password);
+	    } catch(Exception ex) {
+	        System.out.println(ex.getMessage());
+	        System.out.println("couldn't connect!");
+	        throw new RuntimeException(ex);
+	    }
+	}
+}
